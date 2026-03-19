@@ -1,2 +1,2 @@
-# web
+# Nightingale Intelligence
 Nightingale Intelligence Website

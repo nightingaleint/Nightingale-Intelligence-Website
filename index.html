@@ -8,75 +8,98 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
+:root{
+  /* ── Nightingale Intelligence palette ── */
+  --ink:#030d0f;           /* near-black with teal undertone */
+  --teal-deep:#042f35;
+  --teal-mid:#075e6a;
+  --teal:#0b8a9a;
+  --teal-light:#1ab3c4;
+  --teal-ghost:rgba(11,138,154,.18);
+  --salmon:#e8705a;        /* coral-salmon accent */
+  --salmon-soft:#f0967e;
+  --apricot:#f4b8a8;       /* apricot blush */
+  --cream:#f5f0e8;         /* warm cream */
+  --cream-dim:rgba(245,240,232,.72);
+  --cream-ghost:rgba(245,240,232,.32);
+  --text-bright:rgba(245,240,232,.92);   /* cream — main readable text */
+  --text-mid:rgba(245,240,232,.58);
+  --text-dim:rgba(245,240,232,.32);
+  --text-faint:rgba(245,240,232,.16);
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);cursor:none}
 
 /* layered canvases */
-#topo,#stars,#scan{position:fixed;inset:0;pointer-events:none}
-#topo{z-index:1}
-#stars{z-index:2}
-#scan{z-index:3;opacity:.18}
+#wormhole,#topo,#stars,#scan{position:fixed;inset:0;pointer-events:none}
+#wormhole{z-index:1}
+#topo{z-index:2}
+#stars{z-index:3}
+#scan{z-index:4;opacity:.12}
 
 /* grain */
-.grain{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:.04;
+.grain{position:fixed;inset:0;z-index:5;pointer-events:none;opacity:.035;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-/* vignette */
-.vign{position:fixed;inset:0;z-index:5;pointer-events:none;
-  background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(1,5,9,.85) 100%)}
+/* vignette — teal-tinted */
+.vign{position:fixed;inset:0;z-index:6;pointer-events:none;
+  background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 35%,rgba(3,13,15,.92) 100%)}
 
 /* cursor */
 .cur{position:fixed;z-index:100;pointer-events:none;
-  width:14px;height:14px;border:1px solid rgba(120,184,232,.7);border-radius:50%;
+  width:14px;height:14px;border:1px solid rgba(26,179,196,.65);border-radius:50%;
   transform:translate(-50%,-50%);transition:transform .1s;mix-blend-mode:screen}
 .cdot{position:fixed;z-index:100;pointer-events:none;
-  width:2px;height:2px;background:rgba(184,220,245,.9);border-radius:50%;
-  transform:translate(-50%,-50%);box-shadow:0 0 4px rgba(120,184,232,.8)}
+  width:2px;height:2px;background:rgba(240,150,126,.9);border-radius:50%;
+  transform:translate(-50%,-50%);box-shadow:0 0 5px rgba(232,112,90,.9)}
 
 /* UI layer */
 .ui{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;
   justify-content:space-between;pointer-events:none}
 
-/* top bar */
+/* ── TOP BAR ── */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;
   padding:28px 40px;
   animation:fadeIn 2s ease both;animation-delay:.5s;
 }
 .logo{
-  display:flex;align-items:center;gap:11px;
+  display:flex;align-items:center;gap:13px;
   pointer-events:all;text-decoration:none;
 }
-.logo-oct{animation:octSpin 50s linear infinite;flex-shrink:0}
+.logo-oct{animation:octSpin 60s linear infinite;flex-shrink:0}
 @keyframes octSpin{to{transform:rotate(360deg)}}
 .logo-name{
   font-family:'Courier Prime',monospace;
-  font-size:.72rem;letter-spacing:.22em;
-  text-transform:uppercase;color:rgba(184,220,245,.65);
+  font-size:.76rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text-bright);
   line-height:1.3;
 }
 .logo-sub{
-  font-size:.44rem;letter-spacing:.28em;
-  color:rgba(120,184,232,.35);display:block;
-  margin-top:1px;
+  font-size:.48rem;letter-spacing:.26em;
+  color:var(--text-dim);display:block;
+  margin-top:2px;
 }
-.topnav{display:flex;gap:2px;pointer-events:all}
+
+/* top nav */
+.topnav{display:flex;gap:2px;pointer-events:all;align-items:center}
 .tnl{
-  font-family:'Courier Prime',monospace;font-size:.58rem;
+  font-family:'Courier Prime',monospace;font-size:.62rem;
   letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(120,184,232,.35);text-decoration:none;
-  padding:5px 12px;border:1px solid transparent;border-radius:1px;
+  color:var(--text-mid);text-decoration:none;
+  padding:6px 14px;border:1px solid transparent;border-radius:1px;
   transition:all .3s;
 }
-.tnl:hover{color:rgba(184,220,245,.75);border-color:rgba(120,184,232,.2)}
+.tnl:hover{color:var(--cream);border-color:rgba(26,179,196,.28);background:var(--teal-ghost)}
 .tnl.live{
-  color:rgba(90,216,138,.6);border-color:rgba(90,216,138,.2);
-  background:rgba(90,216,138,.04);
+  color:rgba(26,179,196,.85);border-color:rgba(26,179,196,.28);
+  background:rgba(11,138,154,.06);
 }
-.tnl.live::before{content:'• ';animation:blink 2s ease infinite}
+.tnl.live::before{content:'• ';animation:blink 2s ease infinite;color:var(--teal-light)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* centre hero */
+/* ── CENTRE ── */
 .hero-centre{
   flex:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
@@ -85,77 +108,100 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
 }
 .hero-stamp{
   font-family:'Courier Prime',monospace;
-  font-size:.54rem;letter-spacing:.28em;text-transform:uppercase;
-  color:rgba(120,184,232,.3);margin-bottom:24px;
+  font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:26px;
   animation:fadeIn 2s ease both;animation-delay:1s;
 }
 .hero-title{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(2.8rem,6vw,5.5rem);
   font-weight:300;font-style:italic;
-  color:rgba(232,244,255,.9);
+  color:var(--text-bright);
   line-height:1.1;letter-spacing:.02em;
   animation:fadeIn 2s ease both;animation-delay:1.4s;
-  text-shadow:0 0 60px rgba(120,184,232,.25);
+  text-shadow:0 0 60px rgba(11,138,154,.3);
 }
 .hero-title strong{
   font-weight:600;font-style:normal;
-  background:linear-gradient(135deg,rgba(184,220,245,.95),rgba(232,244,255,.7));
+  background:linear-gradient(135deg,rgba(184,228,255,.98) 0%,rgba(120,190,240,.85) 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
 }
 .hero-rule{
   width:1px;height:40px;
-  background:linear-gradient(180deg,rgba(120,184,232,.4),transparent);
-  margin:24px auto;
+  background:linear-gradient(180deg,rgba(26,179,196,.5),transparent);
+  margin:26px auto;
   animation:fadeIn 2s ease both;animation-delay:1.8s;
 }
 .hero-sub{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(.85rem,1.5vw,1.1rem);
+  font-size:clamp(1.05rem,1.6vw,1.25rem);
   font-weight:300;
-  color:rgba(184,220,245,.38);
+  color:rgba(245,240,232,.78);  /* warm cream — clearly readable against dark ink */
   letter-spacing:.08em;
   animation:fadeIn 2s ease both;animation-delay:2s;
-  max-width:480px;
+  max-width:500px;line-height:1.7;
 }
 
-/* platform dots */
+/* ── PLATFORM DOTS ── */
 .platforms{
-  display:flex;align-items:center;gap:20px;
-  margin-top:32px;
+  display:flex;align-items:center;gap:22px;
+  margin-top:34px;
   animation:fadeIn 2s ease both;animation-delay:2.4s;
   pointer-events:all;
 }
 .pdot{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
   text-decoration:none;
 }
+/* icon ring — larger */
 .pdot-ring{
-  width:32px;height:32px;border-radius:50%;
-  border:1px solid rgba(120,184,232,.2);
+  width:46px;height:46px;border-radius:50%;
+  border:1px solid rgba(26,179,196,.22);
   display:flex;align-items:center;justify-content:center;
-  font-size:1rem;transition:all .3s;
-  background:rgba(1,5,9,.4);
+  transition:all .35s;
+  background:rgba(3,13,15,.5);
 }
+.pdot-ring svg{transition:all .35s}
 .pdot:hover .pdot-ring{
-  border-color:rgba(184,220,245,.5);
-  background:rgba(120,184,232,.08);
-  transform:scale(1.15);
-  box-shadow:0 0 16px rgba(120,184,232,.15);
+  border-color:rgba(232,112,90,.6);
+  background:rgba(232,112,90,.06);
+  transform:scale(1.18);
+  box-shadow:0 0 20px rgba(232,112,90,.14),0 0 40px rgba(11,138,154,.1);
 }
+.pdot:hover .pdot-ring svg{stroke:var(--salmon-soft)}
 .pdot-label{
   font-family:'Courier Prime',monospace;
-  font-size:.42rem;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(120,184,232,.3);
+  font-size:.48rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-dim);
   transition:color .3s;
 }
-.pdot:hover .pdot-label{color:rgba(184,220,245,.6)}
-.pdot.live .pdot-ring{border-color:rgba(90,216,138,.35)}
-.pdot.live .pdot-label{color:rgba(90,216,138,.4)}
-.pdiv{width:1px;height:20px;background:rgba(120,184,232,.1)}
+.pdot:hover .pdot-label{color:var(--cream-dim)}
+.pdot.live .pdot-ring{border-color:rgba(26,179,196,.4)}
+.pdot.live .pdot-ring svg{stroke:var(--teal-light)}
+.pdot.live .pdot-label{color:rgba(26,179,196,.55)}
+.pdiv{width:1px;height:24px;background:rgba(245,240,232,.07)}
 
-/* bottom bar */
+/* contact link */
+.enter-btn{
+  pointer-events:all;
+  margin-top:38px;
+  font-family:'Courier Prime',monospace;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(245,240,232,.62);
+  background:none;border:1px solid rgba(26,179,196,.22);
+  padding:11px 26px;border-radius:1px;cursor:pointer;
+  transition:all .4s;text-decoration:none;display:inline-block;
+  animation:fadeIn 2s ease both;animation-delay:2.8s;
+}
+.enter-btn:hover{
+  color:var(--cream);
+  border-color:rgba(26,179,196,.5);
+  background:rgba(26,179,196,.06);
+  box-shadow:0 0 28px rgba(26,179,196,.1);
+}
+
+/* ── BOTTOM BAR ── */
 .botbar{
   display:flex;align-items:flex-end;justify-content:space-between;
   padding:20px 40px;
@@ -163,67 +209,46 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
 }
 .bot-left{
   font-family:'Courier Prime',monospace;
-  font-size:.52rem;letter-spacing:.14em;
-  color:rgba(120,184,232,.22);
-  text-transform:uppercase;line-height:1.8;
+  font-size:.54rem;letter-spacing:.14em;
+  color:var(--text-dim);
+  text-transform:uppercase;line-height:1.9;
 }
 .bot-right{
   font-family:'Courier Prime',monospace;
-  font-size:.5rem;letter-spacing:.1em;
-  color:rgba(120,184,232,.2);text-align:right;
+  font-size:.52rem;letter-spacing:.1em;
+  color:var(--text-dim);text-align:right;
   text-transform:uppercase;
 }
 .coord{
-  font-size:.58rem;color:rgba(120,184,232,.35);
+  font-size:.6rem;color:var(--text-mid);
   display:block;font-family:'Courier Prime',monospace;
 }
 
-/* scan line animated */
+/* scan line */
 .scanline{
-  position:fixed;left:0;right:0;z-index:6;
+  position:fixed;left:0;right:0;z-index:7;
   height:1px;
-  background:linear-gradient(90deg,transparent,rgba(120,184,232,.15),rgba(184,220,245,.08),rgba(120,184,232,.15),transparent);
-  animation:scanMove 8s linear infinite;
+  background:linear-gradient(90deg,transparent,rgba(26,179,196,.18),rgba(245,240,232,.07),rgba(26,179,196,.18),transparent);
+  animation:scanMove 10s linear infinite;
   pointer-events:none;
 }
 @keyframes scanMove{
-  0%{top:-2px;opacity:0}
-  2%{opacity:1}
-  98%{opacity:.4}
-  100%{top:100vh;opacity:0}
+  0%{top:-2px;opacity:0}2%{opacity:1}98%{opacity:.3}100%{top:100vh;opacity:0}
 }
-
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-/* enter button */
-.enter-btn{
-  pointer-events:all;
-  margin-top:36px;
-  font-family:'Courier Prime',monospace;
-  font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
-  color:rgba(120,184,232,.4);
-  background:none;border:1px solid rgba(120,184,232,.18);
-  padding:10px 24px;border-radius:1px;cursor:none;
-  transition:all .4s;text-decoration:none;display:inline-block;
-  animation:fadeIn 2s ease both;animation-delay:2.8s;
-}
-.enter-btn:hover{
-  color:rgba(232,244,255,.8);
-  border-color:rgba(120,184,232,.45);
-  background:rgba(120,184,232,.06);
-  box-shadow:0 0 24px rgba(120,184,232,.1);
-}
 
 @media(max-width:700px){
   .topbar,.botbar{padding:18px 20px}
   .topnav{display:none}
-  .platforms{gap:12px}
+  .platforms{gap:14px}
   .pdiv{display:none}
 }
 </style>
 </head>
 <body>
 
+<!-- ═══ CANVASES ═══ -->
+<canvas id="wormhole"></canvas>
 <canvas id="topo"></canvas>
 <canvas id="stars"></canvas>
 <canvas id="scan"></canvas>
@@ -239,18 +264,37 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
   <!-- TOP -->
   <div class="topbar">
     <a class="logo" href="#">
-      <svg class="logo-oct" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="16,1 24,3.5 30,9.5 31,17 28.5,25 22.5,30 9.5,30 3.5,25 1,17 2,9.5 8,3.5" stroke="rgba(120,184,232,.48)" stroke-width=".9" fill="none"/>
-        <polygon points="16,4.5 22,6.5 27,12 27.5,18 25,24 20,28 12,28 7,24 4.5,18 5,12 10,6.5" stroke="rgba(120,184,232,.22)" stroke-width=".55" fill="none"/>
-        <line x1="16" y1="1" x2="16" y2="31" stroke="rgba(120,184,232,.09)" stroke-width=".4"/>
-        <line x1="1" y1="16" x2="31" y2="16" stroke="rgba(120,184,232,.09)" stroke-width=".4"/>
-        <line x1="4" y1="4" x2="28" y2="28" stroke="rgba(120,184,232,.06)" stroke-width=".4"/>
-        <line x1="28" y1="4" x2="4" y2="28" stroke="rgba(120,184,232,.06)" stroke-width=".4"/>
-        <!-- N pointer — slim diamond -->
-        <path d="M16,1 L17,7 L16,9 L15,7 Z" fill="rgba(120,184,232,.85)"/>
-        <path d="M16,31 L17,25 L16,23 L15,25 Z" fill="rgba(120,184,232,.25)"/>
-        <circle cx="16" cy="16" r="2.5" stroke="rgba(120,184,232,.45)" stroke-width=".8" fill="none"/>
-        <circle cx="16" cy="16" r=".7" fill="rgba(184,220,245,.65)"/>
+      <!-- ── SACRED GEOMETRY COMPASS LOGO ── -->
+      <svg class="logo-oct" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer octagon -->
+        <polygon points="19,1.5 27.2,3.8 33.8,10.2 36.2,18.5 33.8,26.8 27.2,33.2 10.8,33.2 4.2,26.8 1.8,18.5 4.2,10.2 10.8,3.8"
+          stroke="rgba(26,179,196,.55)" stroke-width="0.85" fill="none"/>
+        <!-- Inner octagon rotated 22.5° -->
+        <polygon points="19,5.5 25.4,7.5 30.5,12.5 32.5,19 30.5,25.5 25.4,30.5 12.6,30.5 7.5,25.5 5.5,19 7.5,12.5 12.6,7.5"
+          stroke="rgba(26,179,196,.22)" stroke-width="0.5" fill="none"/>
+        <!-- Third inner ring -->
+        <polygon points="19,9.5 23.5,11 27,14.5 28.5,19 27,23.5 23.5,27 14.5,27 11,23.5 9.5,19 11,14.5 14.5,11"
+          stroke="rgba(232,112,90,.2)" stroke-width="0.4" fill="none"/>
+        <!-- Cardinal axes -->
+        <line x1="19" y1="1.5" x2="19" y2="36.5" stroke="rgba(26,179,196,.1)" stroke-width="0.4"/>
+        <line x1="1.5" y1="19" x2="36.5" y2="19" stroke="rgba(26,179,196,.1)" stroke-width="0.4"/>
+        <!-- Diagonal axes -->
+        <line x1="4.5" y1="4.5" x2="33.5" y2="33.5" stroke="rgba(26,179,196,.06)" stroke-width="0.35"/>
+        <line x1="33.5" y1="4.5" x2="4.5" y2="33.5" stroke="rgba(26,179,196,.06)" stroke-width="0.35"/>
+        <!-- N pointer — salmon accent -->
+        <path d="M19,1.5 L20.2,8 L19,10.5 L17.8,8 Z" fill="rgba(232,112,90,.9)"/>
+        <!-- S pointer — dim -->
+        <path d="M19,36.5 L20.2,30 L19,27.5 L17.8,30 Z" fill="rgba(26,179,196,.3)"/>
+        <!-- E pointer — slim -->
+        <path d="M36.5,19 L30,20.2 L27.5,19 L30,17.8 Z" fill="rgba(26,179,196,.2)"/>
+        <!-- W pointer -->
+        <path d="M1.5,19 L8,20.2 L10.5,19 L8,17.8 Z" fill="rgba(26,179,196,.2)"/>
+        <!-- Centre circle -->
+        <circle cx="19" cy="19" r="3.2" stroke="rgba(26,179,196,.45)" stroke-width="0.7" fill="none"/>
+        <circle cx="19" cy="19" r="1.1" fill="rgba(232,112,90,.8)"/>
+        <!-- Subtle inner cross at centre -->
+        <line x1="19" y1="16.2" x2="19" y2="21.8" stroke="rgba(26,179,196,.3)" stroke-width="0.5"/>
+        <line x1="16.2" y1="19" x2="21.8" y2="19" stroke="rgba(26,179,196,.3)" stroke-width="0.5"/>
       </svg>
       <div>
         <div class="logo-name">Nightingale Intelligence
@@ -261,8 +305,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
     <nav class="topnav">
       <a class="tnl live" href="https://hh.nightingaleint.com" target="_blank">High Horse</a>
       <a class="tnl" href="https://twn.nightingaleint.com" target="_blank">Wandering</a>
-      <a class="tnl" href="#">Vault</a>
-      <a class="tnl" href="#">Living</a>
+      <a class="tnl" href="https://vault.nightingaleint.com" target="_blank">Vault</a>
+      <a class="tnl" href="https://living.nightingaleint.com" target="_blank">Living</a>
     </nav>
   </div>
 
@@ -274,37 +318,77 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
       for the <strong>curious.</strong>
     </h1>
     <div class="hero-rule"></div>
-    <p class="hero-sub">Planetary data. Aviation. Earthen homes.<br>Encrypted wealth. Creative culture.</p>
+    <p class="hero-sub">Planetary data. Aviation. Earthen homes.<br>Encrypted wealth.</p>
 
-    <!-- Platform dots -->
+    <!-- Platform dots — 4 platforms, SVG line icons, no emojis -->
     <div class="platforms">
+
+      <!-- HIGH HORSE — planetary / satellite -->
       <a class="pdot live" href="https://hh.nightingaleint.com" target="_blank">
-        <div class="pdot-ring">🐴</div>
+        <div class="pdot-ring">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(26,179,196,.8)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Planet with ring -->
+            <circle cx="12" cy="12" r="5"/>
+            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-20 12 12)" opacity=".5"/>
+            <circle cx="12" cy="6" r=".9" fill="rgba(26,179,196,.8)" stroke="none"/>
+          </svg>
+        </div>
         <div class="pdot-label">High Horse</div>
       </a>
+
       <div class="pdiv"></div>
+
+      <!-- THE WANDERING NIGHTINGALE — aviation / compass -->
       <a class="pdot" href="https://twn.nightingaleint.com" target="_blank">
-        <div class="pdot-ring">✈️</div>
+        <div class="pdot-ring">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(245,240,232,.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Minimalist aircraft -->
+            <path d="M12 3 L20 14 L12 12 L4 14 Z"/>
+            <path d="M9 13 L7 20 L12 17 L17 20 L15 13"/>
+          </svg>
+        </div>
         <div class="pdot-label">Wandering</div>
       </a>
+
       <div class="pdiv"></div>
-      <a class="pdot" href="#">
-        <div class="pdot-ring">🏠</div>
+
+      <!-- NIGHTINGALE LIVING — earthen homes / arch -->
+      <a class="pdot" href="https://living.nightingaleint.com" target="_blank">
+        <div class="pdot-ring">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(245,240,232,.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Arch / adobe dome -->
+            <path d="M4 20 L4 11 Q4 4 12 4 Q20 4 20 11 L20 20"/>
+            <line x1="2" y1="20" x2="22" y2="20"/>
+            <line x1="9" y1="20" x2="9" y2="14"/>
+            <line x1="15" y1="20" x2="15" y2="14"/>
+            <path d="M9 14 Q12 11 15 14" opacity=".6"/>
+          </svg>
+        </div>
         <div class="pdot-label">Living</div>
       </a>
+
       <div class="pdiv"></div>
-      <a class="pdot" href="#">
-        <div class="pdot-ring">🔒</div>
+
+      <!-- NIGHTINGALE VAULT — encrypted wealth / lock -->
+      <a class="pdot" href="https://vault.nightingaleint.com" target="_blank">
+        <div class="pdot-ring">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(245,240,232,.5)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Vault / safe circle -->
+            <circle cx="12" cy="12" r="8.5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="3.5" x2="12" y2="7.5"/>
+            <line x1="20.5" y1="12" x2="16.5" y2="12"/>
+            <line x1="12" y1="20.5" x2="12" y2="16.5"/>
+            <line x1="3.5" y1="12" x2="7.5" y2="12"/>
+            <circle cx="12" cy="12" r="1.2" fill="rgba(245,240,232,.5)" stroke="none"/>
+          </svg>
+        </div>
         <div class="pdot-label">Vault</div>
       </a>
-      <div class="pdiv"></div>
-      <a class="pdot" href="#">
-        <div class="pdot-ring">🎨</div>
-        <div class="pdot-label">Art House</div>
-      </a>
+
     </div>
 
-    <a class="enter-btn" href="https://hh.nightingaleint.com" target="_blank">Enter High Horse →</a>
+    <a class="enter-btn" href="mailto:admin@nightingaleint.com">Contact · admin@nightingaleint.com</a>
   </div>
 
   <!-- BOTTOM -->
@@ -314,154 +398,328 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
       nightingaleint.com · Est. 2026
     </div>
     <div class="bot-right">
-      <span class="coord" id="coordDisp">LAT 51.507° LON -0.127°</span>
-      <span id="utcDisp">--:-- UTC</span>
+      <span class="coord" id="coordDisp">LAT 51.507° N &nbsp; LON 0.127° W</span>
+      <span id="utcDisp">--:--:-- UTC</span>
     </div>
   </div>
 
-</div>
+</div><!-- /ui -->
 
 <script>
+/* ════════════════════════════════════════════════════════
+   1. WORMHOLE / SPACE JOURNEY CANVAS
+   Parallax star-warp tunnel with satellites, signal pulses,
+   floating meteors and a distant planet
+════════════════════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('wormhole');
+  const ctx = cv.getContext('2d');
+  let W, H;
+  function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* Seeded RNG for reproducibility */
+  let seed = 99;
+  function rng(){ seed=(seed*1664525+1013904223)&0xffffffff; return(seed>>>0)/4294967295; }
+
+  /* ── WARP STARS ── */
+  const NSTARS = 180;
+  const warpStars = [];
+  for(let i=0;i<NSTARS;i++){
+    const angle = rng()*Math.PI*2;
+    const dist  = rng()*.48+.02;
+    warpStars.push({
+      angle, dist,
+      speed: rng()*.0018+.0004,
+      r: rng()*1.2+.3,
+      op: rng()*.5+.2,
+      twinkle: rng()*Math.PI*2,
+      twinkleSpeed: rng()*.015+.005,
+      trail: rng()*.06+.01,
+      color: rng()<.15 ? 'salmon' : 'ice', /* occasional warm star */
+    });
+  }
+
+  /* ── SATELLITES ── */
+  const satellites = [
+    { orbitR:.36, orbitSpeed:.0004, angle:.3, size:7, type:'box' },
+    { orbitR:.28, orbitSpeed:-.0003, angle:2.1, size:5, type:'dish' },
+    { orbitR:.44, orbitSpeed:.00025, angle:4.8, size:6, type:'box' },
+  ];
+
+  /* ── METEORS ── */
+  const meteors = [];
+  function spawnMeteor(){
+    meteors.push({
+      x: rng()*W,
+      y: -10,
+      vx: (rng()-.3)*2.5,
+      vy: rng()*3+2,
+      len: rng()*60+30,
+      op: rng()*.5+.3,
+      life: 0,
+      maxLife: rng()*80+60,
+    });
+  }
+
+  /* ── SIGNAL PULSES from Earth ── */
+  const pulses = [];
+  let pulseTimer = 0;
+  function spawnPulse(){
+    pulses.push({ r:0, maxR: rng()*80+40, op:.6, x:W*.5+( rng()-.5)*W*.3, y:H*.5+(rng()-.5)*H*.2 });
+  }
+
+  /* ── FLOATING PLANET ── */
+  let planet = { x:W*.78, y:H*.22, r:38, angle:0 };
+
+  let frame = 0;
+
+  function drawWormhole(){
+    ctx.clearRect(0, 0, W, H);
+    frame++;
+
+    const cx = W/2, cy = H/2;
+
+    /* ── Draw warp tunnel rings ── */
+    for(let ring=0;ring<6;ring++){
+      const rf = ring/5;
+      const rr = (Math.min(W,H)*.06 + rf*Math.min(W,H)*.44) * (1 + Math.sin(frame*.008+ring*.5)*.02);
+      const alpha = .04 - rf*.03 + Math.sin(frame*.006+ring)*.01;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rr, 0, Math.PI*2);
+      ctx.strokeStyle = `rgba(11,138,154,${Math.max(0,alpha)})`;
+      ctx.lineWidth = .6;
+      ctx.stroke();
+    }
+
+    /* ── Warp stars ── */
+    warpStars.forEach(s => {
+      s.dist += s.speed * (1 + s.dist*2); /* accelerate as they expand */
+      s.twinkle += s.twinkleSpeed;
+      if(s.dist > .55){ s.dist = rng()*.04+.005; s.angle=rng()*Math.PI*2; }
+
+      const x = cx + Math.cos(s.angle) * s.dist * Math.min(W,H);
+      const y = cy + Math.sin(s.angle) * s.dist * Math.min(W,H) * .75;
+      const spd = s.dist * 8;
+      const trail = spd * s.trail;
+      const op = s.op * Math.min(1, s.dist*6) * (.8+Math.sin(s.twinkle)*.2);
+
+      /* trail */
+      const tx = x - Math.cos(s.angle)*trail;
+      const ty = y - Math.sin(s.angle)*trail*.75;
+      const g = ctx.createLinearGradient(tx,ty,x,y);
+      const col = s.color==='salmon' ? '232,112,90' : '26,179,196';
+      g.addColorStop(0,'rgba('+col+',0)');
+      g.addColorStop(1,'rgba('+col+','+op+')');
+      ctx.beginPath();
+      ctx.moveTo(tx,ty);
+      ctx.lineTo(x,y);
+      ctx.strokeStyle = g;
+      ctx.lineWidth = s.r;
+      ctx.stroke();
+
+      /* star dot */
+      ctx.beginPath();
+      ctx.arc(x,y,s.r*.8,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,240,232,${op})`;
+      ctx.fill();
+    });
+
+    /* ── Planet ── */
+    planet.angle += .0003;
+    const px = W*.78 + Math.sin(planet.angle)*8;
+    const py = H*.22 + Math.cos(planet.angle*1.3)*5;
+
+    /* Planet body — teal-dark with gradient */
+    const pg = ctx.createRadialGradient(px-planet.r*.3,py-planet.r*.3,planet.r*.1,px,py,planet.r);
+    pg.addColorStop(0,'rgba(7,94,106,.7)');
+    pg.addColorStop(.5,'rgba(4,47,53,.6)');
+    pg.addColorStop(1,'rgba(3,13,15,.85)');
+    ctx.beginPath();
+    ctx.arc(px,py,planet.r,0,Math.PI*2);
+    ctx.fillStyle=pg;
+    ctx.fill();
+
+    /* Planet ring */
+    ctx.save();
+    ctx.translate(px,py);
+    ctx.scale(1,.25);
+    ctx.beginPath();
+    ctx.arc(0,0,planet.r*1.55,0,Math.PI*2);
+    ctx.strokeStyle='rgba(26,179,196,.2)';
+    ctx.lineWidth=4;
+    ctx.stroke();
+    ctx.restore();
+
+    /* Atmosphere glow */
+    const ag = ctx.createRadialGradient(px,py,planet.r*.85,px,py,planet.r*1.4);
+    ag.addColorStop(0,'rgba(26,179,196,.08)');
+    ag.addColorStop(1,'rgba(26,179,196,0)');
+    ctx.beginPath();
+    ctx.arc(px,py,planet.r*1.4,0,Math.PI*2);
+    ctx.fillStyle=ag;
+    ctx.fill();
+
+    /* ── Satellites ── */
+    satellites.forEach(sat => {
+      sat.angle += sat.orbitSpeed;
+      const sx = cx + Math.cos(sat.angle)*sat.orbitR*Math.min(W,H)*.55;
+      const sy = cy + Math.sin(sat.angle)*sat.orbitR*Math.min(W,H)*.4;
+
+      ctx.save();
+      ctx.translate(sx,sy);
+      ctx.rotate(sat.angle);
+      ctx.strokeStyle='rgba(245,240,232,.35)';
+      ctx.lineWidth=.7;
+
+      if(sat.type==='box'){
+        /* Box sat body */
+        ctx.strokeRect(-sat.size/2,-sat.size/3,sat.size,sat.size*2/3);
+        /* Solar panels */
+        ctx.beginPath();
+        ctx.moveTo(-sat.size*.9,0);ctx.lineTo(-sat.size*.5,0);
+        ctx.moveTo(sat.size*.5,0);ctx.lineTo(sat.size*.9,0);
+        ctx.stroke();
+        /* Panel rectangles */
+        ctx.strokeRect(-sat.size*1.4,-sat.size*.25,sat.size*.5,sat.size*.5);
+        ctx.strokeRect(sat.size*.9,-sat.size*.25,sat.size*.5,sat.size*.5);
+      } else {
+        /* Dish sat */
+        ctx.beginPath();
+        ctx.arc(0,0,sat.size*.6,Math.PI,Math.PI*2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0,0);ctx.lineTo(0,-sat.size*.8);
+        ctx.moveTo(-sat.size*.5,0);ctx.lineTo(sat.size*.5,0);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      /* Signal beam from satellite */
+      if(frame%120<60){
+        const progress=(frame%120)/120;
+        const bx=cx,by=cy;
+        const beam=ctx.createLinearGradient(sx,sy,bx,by);
+        beam.addColorStop(0,'rgba(26,179,196,.25)');
+        beam.addColorStop(progress,'rgba(232,112,90,.15)');
+        beam.addColorStop(1,'rgba(26,179,196,0)');
+        ctx.beginPath();
+        ctx.moveTo(sx,sy);ctx.lineTo(bx,by);
+        ctx.strokeStyle=beam;ctx.lineWidth=.5;ctx.stroke();
+      }
+    });
+
+    /* ── Signal pulses ── */
+    pulseTimer++;
+    if(pulseTimer>90){ spawnPulse(); pulseTimer=0; }
+    for(let i=pulses.length-1;i>=0;i--){
+      const p=pulses[i];
+      p.r+=1.8;
+      p.op-=.012;
+      if(p.op<=0){ pulses.splice(i,1); continue; }
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(26,179,196,${p.op*.25})`;
+      ctx.lineWidth=.8;
+      ctx.stroke();
+    }
+
+    /* ── Meteors ── */
+    if(frame%140===0) spawnMeteor();
+    for(let i=meteors.length-1;i>=0;i--){
+      const m=meteors[i];
+      m.x+=m.vx;m.y+=m.vy;m.life++;
+      if(m.life>m.maxLife||m.y>H+20){ meteors.splice(i,1); continue; }
+      const fade=1-m.life/m.maxLife;
+      const mg=ctx.createLinearGradient(m.x-m.vx*m.len*.15,m.y-m.vy*m.len*.15,m.x,m.y);
+      mg.addColorStop(0,'rgba(232,112,90,0)');
+      mg.addColorStop(1,`rgba(245,240,232,${m.op*fade})`);
+      ctx.beginPath();
+      ctx.moveTo(m.x-m.vx*m.len*.15,m.y-m.vy*m.len*.15);
+      ctx.lineTo(m.x,m.y);
+      ctx.strokeStyle=mg;ctx.lineWidth=1.2;ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(m.x,m.y,1.2,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,240,232,${m.op*fade})`;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(drawWormhole);
+  }
+  drawWormhole();
+})();
+
 /* ════════════════════════════════════════════
-   TOPOGRAPHIC CANVAS
+   2. TOPOGRAPHIC CANVAS — teal palette
 ════════════════════════════════════════════ */
 (function(){
   const cv = document.getElementById('topo');
   const ctx = cv.getContext('2d');
   let W, H, t = 0;
 
-  /* Simplex-like noise using trig harmonics — no library needed */
   function noise(x, y, z){
-    return Math.sin(x*1.3 + z) * Math.cos(y*1.1 + z*.7)
-         + Math.sin(x*.6 - z*.8) * Math.cos(y*.9 + z*.4) * .6
-         + Math.sin(x*2.2 + z*1.3) * Math.cos(y*1.8 - z*.9) * .3
-         + Math.sin(x*.3 + y*.4 + z*.5) * .4;
+    return Math.sin(x*1.3+z)*Math.cos(y*1.1+z*.7)
+          +Math.sin(x*.6-z*.8)*Math.cos(y*.9+z*.4)*.6
+          +Math.sin(x*2.2+z*1.3)*Math.cos(y*1.8-z*.9)*.3
+          +Math.sin(x*.3+y*.4+z*.5)*.4;
   }
-
-  function resize(){
-    W = cv.width = window.innerWidth;
-    H = cv.height = window.innerHeight;
-  }
+  function resize(){ W=cv.width=innerWidth; H=cv.height=innerHeight; }
   resize();
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize',resize);
 
-  /* Colour palette — deep navy through ice */
-  function lineColor(v, alpha){
-    /* v ranges roughly -2 to 2 */
-    const n = (v + 2) / 4; /* 0..1 */
-    if(n < .3){
-      /* deep — dark navy blue */
-      return `rgba(18,48,90,${alpha})`;
-    } else if(n < .55){
-      /* mid — sky blue */
-      return `rgba(42,100,168,${alpha * 1.2})`;
-    } else if(n < .78){
-      /* high — ice */
-      return `rgba(90,160,220,${alpha * 1.4})`;
-    } else {
-      /* peak — frost / near white */
-      return `rgba(160,210,240,${alpha * 1.6})`;
-    }
+  function lineColor(v,alpha){
+    const n=(v+2)/4;
+    if(n<.3)  return `rgba(4,47,53,${alpha})`;
+    if(n<.55) return `rgba(7,94,106,${alpha*1.2})`;
+    if(n<.78) return `rgba(11,138,154,${alpha*1.4})`;
+    return     `rgba(26,179,196,${alpha*1.6})`;
   }
 
   function drawTopo(){
-    ctx.clearRect(0, 0, W, H);
-
-    const COLS = 80;     /* field resolution */
-    const ROWS = 50;
-    const LEVELS = 22;   /* number of contour levels */
-    const CELL_W = W / COLS;
-    const CELL_H = H / ROWS;
-
-    /* Pre-compute field */
-    const field = [];
-    for(let r = 0; r <= ROWS; r++){
-      field[r] = [];
-      for(let c = 0; c <= COLS; c++){
-        const nx = c / COLS * 4;
-        const ny = r / ROWS * 3;
-        field[r][c] = noise(nx, ny, t * .0008);
+    ctx.clearRect(0,0,W,H);
+    const COLS=80,ROWS=50,LEVELS=22;
+    const CELL_W=W/COLS,CELL_H=H/ROWS;
+    const field=[];
+    for(let r=0;r<=ROWS;r++){
+      field[r]=[];
+      for(let c=0;c<=COLS;c++){
+        field[r][c]=noise(c/COLS*4,r/ROWS*3,t*.0008);
       }
     }
-
-    /* Find min/max */
-    let mn = Infinity, mx = -Infinity;
-    for(let r = 0; r <= ROWS; r++)
-      for(let c = 0; c <= COLS; c++){
-        if(field[r][c] < mn) mn = field[r][c];
-        if(field[r][c] > mx) mx = field[r][c];
-      }
-
-    /* Marching squares contour extraction */
-    for(let lvl = 0; lvl < LEVELS; lvl++){
-      const threshold = mn + (mx - mn) * (lvl / (LEVELS - 1));
-      const relV = (threshold - mn) / (mx - mn);
-      /* opacity higher near mid-range */
-      const alpha = .12 + Math.sin(relV * Math.PI) * .22;
-
+    let mn=Infinity,mx=-Infinity;
+    for(let r=0;r<=ROWS;r++)for(let c=0;c<=COLS;c++){
+      if(field[r][c]<mn)mn=field[r][c];if(field[r][c]>mx)mx=field[r][c];
+    }
+    for(let lvl=0;lvl<LEVELS;lvl++){
+      const threshold=mn+(mx-mn)*(lvl/(LEVELS-1));
+      const relV=(threshold-mn)/(mx-mn);
+      const alpha=.1+Math.sin(relV*Math.PI)*.18;
       ctx.beginPath();
-      ctx.strokeStyle = lineColor(threshold, alpha);
-      ctx.lineWidth = relV > .7 ? .9 : .55;
-
-      for(let r = 0; r < ROWS; r++){
-        for(let c = 0; c < COLS; c++){
-          const v00 = field[r][c];
-          const v10 = field[r][c+1];
-          const v01 = field[r+1][c];
-          const v11 = field[r+1][c+1];
-
-          /* Which corners are above threshold */
-          const a = v00 >= threshold ? 1 : 0;
-          const b = v10 >= threshold ? 1 : 0;
-          const d = v01 >= threshold ? 1 : 0;
-          const e = v11 >= threshold ? 1 : 0;
-          const idx = a*8 + b*4 + e*2 + d*1;
-
-          if(idx === 0 || idx === 15) continue;
-
-          /* Interpolation helpers */
-          function lerp(va, vb, x1, y1, x2, y2){
-            const f = Math.abs(threshold - va) / (Math.abs(vb - va) + .0001);
-            return [x1 + (x2-x1)*f, y1 + (y2-y1)*f];
-          }
-          const px = c * CELL_W, py = r * CELL_H;
-          const px2 = px + CELL_W, py2 = py + CELL_H;
-
-          /* Edge midpoints */
-          const top    = lerp(v00, v10, px, py, px2, py);
-          const right  = lerp(v10, v11, px2, py, px2, py2);
-          const bottom = lerp(v01, v11, px, py2, px2, py2);
-          const left   = lerp(v00, v01, px, py, px, py2);
-
-          /* Draw segments based on marching squares case */
-          const segs = {
-            1:[left,bottom], 2:[bottom,right], 3:[left,right],
-            4:[top,right],   5:[left,top,bottom,right], /* saddle — two segments */
-            6:[top,bottom],  7:[left,top],
-            8:[left,top],    9:[top,bottom],
-            10:[left,bottom,top,right], /* saddle */
-            11:[top,right],  12:[left,right],
-            13:[bottom,right],14:[left,bottom]
-          };
-
-          const s = segs[idx];
-          if(!s) continue;
-
-          if(idx === 5){
-            /* saddle: two separate segments */
-            ctx.moveTo(s[0][0], s[0][1]); ctx.lineTo(s[1][0], s[1][1]);
-            ctx.moveTo(s[2][0], s[2][1]); ctx.lineTo(s[3][0], s[3][1]);
-          } else if(idx === 10){
-            ctx.moveTo(s[0][0], s[0][1]); ctx.lineTo(s[1][0], s[1][1]);
-            ctx.moveTo(s[2][0], s[2][1]); ctx.lineTo(s[3][0], s[3][1]);
-          } else {
-            ctx.moveTo(s[0][0], s[0][1]); ctx.lineTo(s[1][0], s[1][1]);
-          }
+      ctx.strokeStyle=lineColor(threshold,alpha);
+      ctx.lineWidth=relV>.7?.9:.5;
+      for(let r=0;r<ROWS;r++){
+        for(let c=0;c<COLS;c++){
+          const v00=field[r][c],v10=field[r][c+1],v01=field[r+1][c],v11=field[r+1][c+1];
+          const a=v00>=threshold?1:0,b=v10>=threshold?1:0,d=v01>=threshold?1:0,e=v11>=threshold?1:0;
+          const idx=a*8+b*4+e*2+d*1;
+          if(idx===0||idx===15)continue;
+          function lerp(va,vb,x1,y1,x2,y2){const f=Math.abs(threshold-va)/(Math.abs(vb-va)+.0001);return[x1+(x2-x1)*f,y1+(y2-y1)*f]}
+          const px=c*CELL_W,py=r*CELL_H,px2=px+CELL_W,py2=py+CELL_H;
+          const top=lerp(v00,v10,px,py,px2,py),right=lerp(v10,v11,px2,py,px2,py2);
+          const bottom=lerp(v01,v11,px,py2,px2,py2),left=lerp(v00,v01,px,py,px,py2);
+          const segs={1:[left,bottom],2:[bottom,right],3:[left,right],4:[top,right],
+            5:[left,top,bottom,right],6:[top,bottom],7:[left,top],8:[left,top],9:[top,bottom],
+            10:[left,bottom,top,right],11:[top,right],12:[left,right],13:[bottom,right],14:[left,bottom]};
+          const s=segs[idx];if(!s)continue;
+          if(idx===5||idx===10){
+            ctx.moveTo(s[0][0],s[0][1]);ctx.lineTo(s[1][0],s[1][1]);
+            ctx.moveTo(s[2][0],s[2][1]);ctx.lineTo(s[3][0],s[3][1]);
+          } else {ctx.moveTo(s[0][0],s[0][1]);ctx.lineTo(s[1][0],s[1][1]);}
         }
       }
       ctx.stroke();
     }
-
     t++;
     requestAnimationFrame(drawTopo);
   }
@@ -469,273 +727,150 @@ html,body{width:100%;height:100%;overflow:hidden;background:#010509;cursor:none}
 })();
 
 /* ════════════════════════════════════════════
-   STAR + CONSTELLATION CANVAS
+   3. STAR + CONSTELLATION CANVAS
 ════════════════════════════════════════════ */
 (function(){
-  const cv = document.getElementById('stars');
-  const ctx = cv.getContext('2d');
-  let W, H;
+  const cv=document.getElementById('stars');
+  const ctx=cv.getContext('2d');
+  let W,H;
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
 
-  function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-
-  /* ── REAL CONSTELLATION DATA (normalised 0-1 coordinates) ──
-     Mapped to fill the viewport naturally.
-     Positions are approximate equatorial → screen mappings. */
-  const CONSTELLATIONS = [
-    {
-      name: 'Orion',
-      stars: [
-        /* Betelgeuse, Bellatrix, Mintaka, Alnilam, Alnitak, Saiph, Rigel, Meissa */
-        {x:.18, y:.44, mag:0.5}, {x:.22, y:.38, mag:1.6},
-        {x:.17, y:.52, mag:2.2}, {x:.20, y:.52, mag:1.7}, {x:.23, y:.52, mag:1.8},
-        {x:.25, y:.60, mag:2.1}, {x:.27, y:.62, mag:0.1}, {x:.16, y:.32, mag:3.3},
-        /* Orion's head */
-        {x:.17, y:.36, mag:3.6}, {x:.20, y:.34, mag:3.8},
-      ],
-      lines: [
-        [0,1],[0,2],[1,3],[2,3],[3,4],[4,5],[5,6],[1,6],[0,7]
-      ]
-    },
-    {
-      name: 'Ursa Major',
-      stars: [
-        /* Big Dipper */
-        {x:.55, y:.18, mag:1.8}, {x:.60, y:.15, mag:2.4},
-        {x:.65, y:.14, mag:1.8}, {x:.70, y:.16, mag:1.8},
-        {x:.74, y:.22, mag:2.1}, {x:.71, y:.28, mag:2.0},
-        {x:.64, y:.27, mag:1.8},
-      ],
-      lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]]
-    },
-    {
-      name: 'Cassiopeia',
-      stars: [
-        {x:.72, y:.08, mag:2.2}, {x:.76, y:.05, mag:2.7},
-        {x:.80, y:.08, mag:2.5}, {x:.84, y:.06, mag:2.7},
-        {x:.88, y:.09, mag:3.3},
-      ],
-      lines: [[0,1],[1,2],[2,3],[3,4]]
-    },
-    {
-      name: 'Southern Cross',
-      stars: [
-        {x:.82, y:.72, mag:1.3}, {x:.86, y:.68, mag:1.6},
-        {x:.86, y:.76, mag:2.1}, {x:.90, y:.72, mag:2.8},
-      ],
-      lines: [[0,2],[1,3]]
-    },
-    {
-      name: 'Scorpius',
-      stars: [
-        {x:.58, y:.62, mag:0.9}, {x:.61, y:.58, mag:2.6},
-        {x:.64, y:.55, mag:2.9}, {x:.67, y:.57, mag:1.6},
-        {x:.70, y:.60, mag:2.4}, {x:.72, y:.65, mag:3.0},
-        {x:.70, y:.70, mag:2.7}, {x:.66, y:.73, mag:3.0},
-        {x:.63, y:.76, mag:2.8},
-      ],
-      lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]
-    },
-    {
-      name: 'Leo',
-      stars: [
-        {x:.38, y:.35, mag:1.4}, {x:.34, y:.28, mag:2.1},
-        {x:.30, y:.24, mag:2.0}, {x:.28, y:.30, mag:3.1},
-        {x:.32, y:.35, mag:2.6}, {x:.40, y:.42, mag:2.1},
-        {x:.36, y:.40, mag:3.3},
-      ],
-      lines: [[0,1],[1,2],[2,3],[3,4],[4,0],[0,5],[5,6],[6,4]]
-    },
-    {
-      name: 'Lyra',
-      stars: [
-        {x:.68, y:.30, mag:0.0}, /* Vega */
-        {x:.71, y:.34, mag:3.5}, {x:.70, y:.38, mag:4.4},
-        {x:.73, y:.38, mag:3.3}, {x:.74, y:.34, mag:3.6},
-      ],
-      lines: [[0,1],[1,2],[2,3],[3,4],[4,1]]
-    },
-    {
-      name: 'Cygnus',
-      stars: [
-        {x:.60, y:.28, mag:1.3}, /* Deneb */
-        {x:.57, y:.34, mag:3.2}, {x:.54, y:.40, mag:2.5},
-        {x:.51, y:.46, mag:3.7}, {x:.63, y:.40, mag:3.1},
-        {x:.57, y:.40, mag:2.9}, {x:.50, y:.38, mag:3.8},
-      ],
-      lines: [[0,1],[1,2],[2,3],[4,5],[5,6],[5,2]]
-    },
+  const CONSTELLATIONS=[
+    {name:'Orion',stars:[
+      {x:.18,y:.44,mag:.5},{x:.22,y:.38,mag:1.6},{x:.17,y:.52,mag:2.2},
+      {x:.20,y:.52,mag:1.7},{x:.23,y:.52,mag:1.8},{x:.25,y:.60,mag:2.1},
+      {x:.27,y:.62,mag:.1},{x:.16,y:.32,mag:3.3},{x:.17,y:.36,mag:3.6},{x:.20,y:.34,mag:3.8},
+    ],lines:[[0,1],[0,2],[1,3],[2,3],[3,4],[4,5],[5,6],[1,6],[0,7]]},
+    {name:'Ursa Major',stars:[
+      {x:.55,y:.18,mag:1.8},{x:.60,y:.15,mag:2.4},{x:.65,y:.14,mag:1.8},
+      {x:.70,y:.16,mag:1.8},{x:.74,y:.22,mag:2.1},{x:.71,y:.28,mag:2.0},{x:.64,y:.27,mag:1.8},
+    ],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]]},
+    {name:'Cassiopeia',stars:[
+      {x:.72,y:.08,mag:2.2},{x:.76,y:.05,mag:2.7},{x:.80,y:.08,mag:2.5},
+      {x:.84,y:.06,mag:2.7},{x:.88,y:.09,mag:3.3},
+    ],lines:[[0,1],[1,2],[2,3],[3,4]]},
+    {name:'Southern Cross',stars:[
+      {x:.82,y:.72,mag:1.3},{x:.86,y:.68,mag:1.6},{x:.86,y:.76,mag:2.1},{x:.90,y:.72,mag:2.8},
+    ],lines:[[0,2],[1,3]]},
+    {name:'Scorpius',stars:[
+      {x:.58,y:.62,mag:.9},{x:.61,y:.58,mag:2.6},{x:.64,y:.55,mag:2.9},
+      {x:.67,y:.57,mag:1.6},{x:.70,y:.60,mag:2.4},{x:.72,y:.65,mag:3.0},
+      {x:.70,y:.70,mag:2.7},{x:.66,y:.73,mag:3.0},{x:.63,y:.76,mag:2.8},
+    ],lines:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]},
+    {name:'Lyra',stars:[
+      {x:.68,y:.30,mag:.0},{x:.71,y:.34,mag:3.5},{x:.70,y:.38,mag:4.4},
+      {x:.73,y:.38,mag:3.3},{x:.74,y:.34,mag:3.6},
+    ],lines:[[0,1],[1,2],[2,3],[3,4],[4,1]]},
   ];
 
-  /* Background stars — randomised but consistent */
-  const RNG_STARS = [];
-  let seed = 42;
-  function rng(){seed = (seed*1664525 + 1013904223) & 0xffffffff;return(seed>>>0)/0xffffffff}
-  for(let i = 0; i < 280; i++){
-    RNG_STARS.push({
-      rx: rng(), ry: rng(),
-      r: rng() * 1.4 + .2,
-      op: rng() * .5 + .15,
-      tw: rng() * Math.PI * 2,
-      tws: rng() * .012 + .002,
-    });
+  const RNG_STARS=[];
+  let seed=42;
+  function rng(){seed=(seed*1664525+1013904223)&0xffffffff;return(seed>>>0)/0xffffffff}
+  for(let i=0;i<260;i++){
+    RNG_STARS.push({rx:rng(),ry:rng(),r:rng()*1.2+.2,op:rng()*.4+.12,
+      tw:rng()*Math.PI*2,tws:rng()*.012+.002});
   }
-
-  let frame = 0;
+  let frame=0;
   function drawStars(){
-    ctx.clearRect(0, 0, W, H);
-    frame++;
-
-    /* Background field stars */
-    RNG_STARS.forEach(s => {
-      s.tw += s.tws;
-      const op = s.op + Math.sin(s.tw) * .12;
+    ctx.clearRect(0,0,W,H);frame++;
+    RNG_STARS.forEach(s=>{
+      s.tw+=s.tws;
+      const op=s.op+Math.sin(s.tw)*.1;
       ctx.beginPath();
-      ctx.arc(s.rx * W, s.ry * H, s.r, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(200,228,248,${Math.max(0, op)})`;
+      ctx.arc(s.rx*W,s.ry*H,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,240,232,${Math.max(0,op)})`;
       ctx.fill();
     });
-
-    /* Draw constellations */
-    CONSTELLATIONS.forEach(con => {
-      const ss = con.stars;
-
-      /* Connection lines first */
-      ctx.strokeStyle = 'rgba(120,184,232,.1)';
-      ctx.lineWidth = .55;
-      con.lines.forEach(([a, b]) => {
-        ctx.beginPath();
-        ctx.moveTo(ss[a].x * W, ss[a].y * H);
-        ctx.lineTo(ss[b].x * W, ss[b].y * H);
-        ctx.stroke();
+    CONSTELLATIONS.forEach(con=>{
+      const ss=con.stars;
+      ctx.strokeStyle='rgba(26,179,196,.09)';ctx.lineWidth=.5;
+      con.lines.forEach(([a,b])=>{
+        ctx.beginPath();ctx.moveTo(ss[a].x*W,ss[a].y*H);ctx.lineTo(ss[b].x*W,ss[b].y*H);ctx.stroke();
       });
-
-      /* Stars */
-      ss.forEach(s => {
-        const brt = Math.max(0, (4 - s.mag) / 4);
-        const r = .8 + brt * 2.2;
-        const op = .3 + brt * .55 + Math.sin(frame * .018 + s.x * 10) * .08;
-
-        /* Glow for bright stars */
-        if(brt > .6){
-          const g = ctx.createRadialGradient(s.x*W, s.y*H, 0, s.x*W, s.y*H, r*5);
-          g.addColorStop(0, `rgba(200,228,248,${op*.3})`);
-          g.addColorStop(1, 'rgba(200,228,248,0)');
-          ctx.beginPath();
-          ctx.arc(s.x*W, s.y*H, r*5, 0, Math.PI*2);
-          ctx.fillStyle = g;
-          ctx.fill();
+      ss.forEach(s=>{
+        const brt=Math.max(0,(4-s.mag)/4);const r=.7+brt*2;
+        const op=.25+brt*.5+Math.sin(frame*.018+s.x*10)*.07;
+        if(brt>.6){
+          const g=ctx.createRadialGradient(s.x*W,s.y*H,0,s.x*W,s.y*H,r*5);
+          g.addColorStop(0,`rgba(245,240,232,${op*.25})`);g.addColorStop(1,'rgba(245,240,232,0)');
+          ctx.beginPath();ctx.arc(s.x*W,s.y*H,r*5,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
         }
-
-        /* Star body */
-        ctx.beginPath();
-        ctx.arc(s.x*W, s.y*H, r, 0, Math.PI*2);
-        ctx.fillStyle = brt > .8
-          ? `rgba(220,240,255,${op})`
-          : `rgba(180,215,240,${op})`;
+        ctx.beginPath();ctx.arc(s.x*W,s.y*H,r,0,Math.PI*2);
+        ctx.fillStyle=brt>.8?`rgba(245,240,232,${op})`:`rgba(200,228,240,${op})`;
         ctx.fill();
-
-        /* Cross sparkle on bright stars */
-        if(brt > .75){
-          const g2 = r * 3.5;
-          ctx.beginPath();
-          ctx.moveTo(s.x*W - g2, s.y*H);
-          ctx.lineTo(s.x*W + g2, s.y*H);
-          ctx.moveTo(s.x*W, s.y*H - g2);
-          ctx.lineTo(s.x*W, s.y*H + g2);
-          ctx.strokeStyle = `rgba(200,228,248,${op * .4})`;
-          ctx.lineWidth = .5;
-          ctx.stroke();
-        }
       });
-
-      /* Constellation label */
-      const cx = ss.reduce((a,s) => a + s.x, 0) / ss.length;
-      const cy = ss.reduce((a,s) => a + s.y, 0) / ss.length;
-      ctx.font = '400 .58rem Courier Prime';
-      ctx.fillStyle = 'rgba(120,184,232,.2)';
-      ctx.letterSpacing = '.12em';
-      ctx.textAlign = 'center';
-      ctx.fillText(con.name.toUpperCase(), cx*W, cy*H - 12);
+      const cx2=ss.reduce((a,s)=>a+s.x,0)/ss.length;
+      const cy2=ss.reduce((a,s)=>a+s.y,0)/ss.length;
+      ctx.font='400 .54rem Courier Prime';ctx.fillStyle='rgba(26,179,196,.18)';
+      ctx.letterSpacing='.1em';ctx.textAlign='center';
+      ctx.fillText(con.name.toUpperCase(),cx2*W,cy2*H-12);
     });
-
     requestAnimationFrame(drawStars);
   }
   drawStars();
 })();
 
 /* ════════════════════════════════════════════
-   SCAN LINE CANVAS — horizontal sweep effect
+   4. SCAN CANVAS
 ════════════════════════════════════════════ */
 (function(){
-  const cv = document.getElementById('scan');
-  const ctx = cv.getContext('2d');
-  let W, H, scanY = 0;
-  function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
-
+  const cv=document.getElementById('scan');
+  const ctx=cv.getContext('2d');
+  let W,H;
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
   function drawScan(){
-    ctx.clearRect(0, 0, W, H);
-    /* Very subtle horizontal scan lines — just barely visible */
-    for(let y = 0; y < H; y += 3){
-      ctx.fillStyle = 'rgba(10,25,50,.08)';
-      ctx.fillRect(0, y, W, 1);
-    }
+    ctx.clearRect(0,0,W,H);
+    for(let y=0;y<H;y+=3){ctx.fillStyle='rgba(3,13,15,.07)';ctx.fillRect(0,y,W,1);}
     requestAnimationFrame(drawScan);
   }
   drawScan();
 })();
 
 /* ════════════════════════════════════════════
-   CURSOR
+   5. CURSOR
 ════════════════════════════════════════════ */
-const cur = document.getElementById('cur');
-const cdot = document.getElementById('cdot');
-let mx=0, my=0, cx=0, cy=0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cdot.style.left = mx + 'px'; cdot.style.top = my + 'px';
-  /* Update coordinate display */
-  const latRaw = 51.5074 + (my/window.innerHeight - .5) * 20;
-  const lonRaw = -0.1278 + (mx/window.innerWidth - .5) * 40;
-  const latStr = latRaw.toFixed(3) + (latRaw >= 0 ? '° N' : '° S');
-  const lonStr = Math.abs(lonRaw).toFixed(3) + (lonRaw >= 0 ? '° E' : '° W');
-  const coordEl = document.getElementById('coordDisp');
-  if(coordEl) coordEl.textContent = 'LAT ' + latStr + '  LON ' + lonStr;
+const cur=document.getElementById('cur');
+const cdot=document.getElementById('cdot');
+let mx=0,my=0,ccx=0,ccy=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cdot.style.left=mx+'px';cdot.style.top=my+'px';
+  const latRaw=51.5074+(my/window.innerHeight-.5)*20;
+  const lonRaw=-0.1278+(mx/window.innerWidth-.5)*40;
+  const latStr=latRaw.toFixed(3)+(latRaw>=0?'° N':'° S');
+  const lonStr=Math.abs(lonRaw).toFixed(3)+(lonRaw>=0?'° E':'° W');
+  const coordEl=document.getElementById('coordDisp');
+  if(coordEl)coordEl.textContent='LAT '+latStr+'  LON '+lonStr;
 });
 (function animCur(){
-  cx += (mx-cx) * .1; cy += (my-cy) * .1;
-  cur.style.left = cx+'px'; cur.style.top = cy+'px';
+  ccx+=(mx-ccx)*.1;ccy+=(my-ccy)*.1;
+  cur.style.left=ccx+'px';cur.style.top=ccy+'px';
   requestAnimationFrame(animCur);
 })();
-
-/* Cursor hover state */
-document.querySelectorAll('a, button, .pdot').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cur.style.transform = 'translate(-50%,-50%) scale(2)';
-    cur.style.borderColor = 'rgba(184,220,245,.7)';
-    cur.style.background = 'rgba(120,184,232,.06)';
+document.querySelectorAll('a,button,.pdot').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(2)';
+    cur.style.borderColor='rgba(232,112,90,.8)';
+    cur.style.background='rgba(232,112,90,.06)';
   });
-  el.addEventListener('mouseleave', () => {
-    cur.style.transform = 'translate(-50%,-50%) scale(1)';
-    cur.style.borderColor = 'rgba(120,184,232,.7)';
-    cur.style.background = 'none';
+  el.addEventListener('mouseleave',()=>{
+    cur.style.transform='translate(-50%,-50%) scale(1)';
+    cur.style.borderColor='rgba(26,179,196,.65)';
+    cur.style.background='none';
   });
 });
 
 /* ════════════════════════════════════════════
-   UTC CLOCK
+   6. UTC CLOCK
 ════════════════════════════════════════════ */
 function tickClock(){
-  const n = new Date();
-  const p = x => String(x).padStart(2,'0');
-  const el = document.getElementById('utcDisp');
-  if(el) el.textContent = p(n.getUTCHours())+':'+p(n.getUTCMinutes())+':'+p(n.getUTCSeconds())+' UTC';
+  const n=new Date(),p=x=>String(x).padStart(2,'0');
+  const el=document.getElementById('utcDisp');
+  if(el)el.textContent=p(n.getUTCHours())+':'+p(n.getUTCMinutes())+':'+p(n.getUTCSeconds())+' UTC';
 }
-setInterval(tickClock, 1000);
-tickClock();
+setInterval(tickClock,1000);tickClock();
 </script>
 </body>
 </html>

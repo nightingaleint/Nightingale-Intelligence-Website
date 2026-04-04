@@ -237,11 +237,246 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);cursor:no
 }
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
+/* ── CONSULTING PANEL ── */
+.consult-overlay{
+  position:fixed;inset:0;z-index:50;
+  background:rgba(3,13,15,.0);
+  pointer-events:none;
+  transition:background .6s ease;
+}
+.consult-overlay.open{
+  background:rgba(3,13,15,.72);
+  pointer-events:all;
+}
+.consult-panel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:min(760px,100vw);
+  z-index:51;
+  background:linear-gradient(160deg,rgba(4,47,53,.98) 0%,rgba(3,13,15,.99) 60%);
+  border-left:1px solid rgba(26,179,196,.15);
+  transform:translateX(100%);
+  transition:transform .65s cubic-bezier(.77,0,.175,1);
+  overflow-y:auto;
+  pointer-events:all;
+  -webkit-overflow-scrolling:touch;
+}
+.consult-panel.open{transform:translateX(0)}
+.consult-panel::-webkit-scrollbar{width:3px}
+.consult-panel::-webkit-scrollbar-track{background:transparent}
+.consult-panel::-webkit-scrollbar-thumb{background:rgba(26,179,196,.25);border-radius:2px}
+
+/* Panel header */
+.cp-header{
+  padding:34px 44px 0;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  position:sticky;top:0;
+  background:linear-gradient(180deg,rgba(4,47,53,.98) 80%,transparent);
+  z-index:2;padding-bottom:20px;
+}
+.cp-close{
+  background:none;border:1px solid rgba(26,179,196,.2);
+  color:var(--text-mid);font-family:'Courier Prime',monospace;
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 14px;border-radius:1px;cursor:pointer;
+  transition:all .3s;flex-shrink:0;margin-top:4px;
+}
+.cp-close:hover{color:var(--cream);border-color:rgba(232,112,90,.5);background:rgba(232,112,90,.05)}
+.cp-eyebrow{
+  font-family:'Courier Prime',monospace;font-size:.56rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--teal-light);margin-bottom:10px;
+}
+.cp-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.9rem,3.5vw,2.8rem);
+  font-weight:300;font-style:italic;
+  color:var(--text-bright);line-height:1.1;
+}
+.cp-title strong{font-weight:600;font-style:normal;color:var(--teal-light)}
+.cp-body{padding:0 44px 60px}
+
+/* Intro */
+.cp-intro{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.08rem;font-weight:300;
+  color:rgba(245,240,232,.7);
+  line-height:1.75;letter-spacing:.03em;
+  margin:22px 0 36px;
+  border-left:1px solid rgba(26,179,196,.25);
+  padding-left:20px;
+}
+
+/* Section label */
+.cp-section-label{
+  font-family:'Courier Prime',monospace;font-size:.52rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.cp-section-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(26,179,196,.2),transparent);
+}
+
+/* Service cards */
+.cp-services{display:flex;flex-direction:column;gap:2px;margin-bottom:40px}
+.cp-svc{
+  border:1px solid rgba(26,179,196,.1);
+  border-radius:1px;
+  padding:22px 26px;
+  background:rgba(11,138,154,.03);
+  transition:all .3s;
+  cursor:default;
+}
+.cp-svc:hover{
+  border-color:rgba(26,179,196,.3);
+  background:rgba(11,138,154,.07);
+}
+.cp-svc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:10px}
+.cp-svc-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.22rem;font-weight:600;
+  color:var(--text-bright);letter-spacing:.02em;
+}
+.cp-svc-rate{
+  font-family:'Courier Prime',monospace;font-size:.62rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--salmon-soft);white-space:nowrap;
+  border:1px solid rgba(232,112,90,.25);
+  padding:4px 10px;border-radius:1px;
+  background:rgba(232,112,90,.04);
+}
+.cp-svc-desc{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.96rem;font-weight:300;
+  color:var(--text-mid);line-height:1.65;
+}
+.cp-svc-tags{
+  margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;
+}
+.cp-tag{
+  font-family:'Courier Prime',monospace;font-size:.46rem;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(26,179,196,.6);
+  border:1px solid rgba(26,179,196,.15);
+  padding:3px 8px;border-radius:1px;
+}
+
+/* Worked-example strip */
+.cp-examples{margin-bottom:40px}
+.cp-example{
+  padding:20px 0;
+  border-bottom:1px solid rgba(26,179,196,.08);
+  display:grid;grid-template-columns:auto 1fr auto;
+  gap:18px;align-items:start;
+}
+.cp-example:last-child{border-bottom:none}
+.cp-ex-num{
+  font-family:'Courier Prime',monospace;font-size:.52rem;
+  color:var(--text-faint);letter-spacing:.1em;padding-top:3px;
+}
+.cp-ex-project{
+  font-family:'Cormorant Garamond',serif;font-size:1rem;
+  font-weight:600;color:var(--text-bright);margin-bottom:4px;
+}
+.cp-ex-detail{
+  font-family:'Cormorant Garamond',serif;font-size:.9rem;
+  font-weight:300;color:var(--text-mid);line-height:1.55;
+}
+.cp-ex-value{
+  font-family:'Courier Prime',monospace;font-size:.54rem;
+  color:var(--apricot);letter-spacing:.08em;text-align:right;
+  white-space:nowrap;
+}
+
+/* Engagement model */
+.cp-engage{
+  margin-bottom:40px;
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.cp-eng-block{
+  border:1px solid rgba(26,179,196,.1);
+  padding:18px 20px;
+  background:rgba(3,13,15,.4);
+}
+.cp-eng-title{
+  font-family:'Courier Prime',monospace;font-size:.54rem;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--teal-light);margin-bottom:8px;
+}
+.cp-eng-body{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.92rem;font-weight:300;
+  color:var(--text-mid);line-height:1.6;
+}
+
+/* Rate table */
+.cp-ratetable{
+  width:100%;border-collapse:collapse;margin-bottom:40px;
+}
+.cp-ratetable th{
+  font-family:'Courier Prime',monospace;font-size:.5rem;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-dim);padding:0 0 10px;text-align:left;
+  border-bottom:1px solid rgba(26,179,196,.12);
+}
+.cp-ratetable td{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.95rem;font-weight:300;
+  color:var(--text-mid);padding:12px 0;
+  border-bottom:1px solid rgba(26,179,196,.06);
+  vertical-align:top;
+}
+.cp-ratetable td:first-child{font-weight:600;color:var(--text-bright)}
+.cp-ratetable td.rate{
+  font-family:'Courier Prime',monospace;font-size:.68rem;
+  color:var(--salmon-soft);letter-spacing:.06em;
+}
+.cp-ratetable tr:last-child td{border-bottom:none}
+
+/* CTA */
+.cp-cta{
+  margin-top:44px;padding:28px;
+  border:1px solid rgba(26,179,196,.18);
+  background:rgba(11,138,154,.05);
+  text-align:center;
+}
+.cp-cta-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;font-style:italic;font-weight:300;
+  color:var(--text-mid);margin-bottom:18px;
+  line-height:1.6;
+}
+.cp-cta-btn{
+  display:inline-block;
+  font-family:'Courier Prime',monospace;font-size:.62rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cream);
+  border:1px solid rgba(26,179,196,.4);
+  padding:12px 30px;border-radius:1px;
+  text-decoration:none;transition:all .4s;cursor:pointer;background:none;
+}
+.cp-cta-btn:hover{
+  border-color:rgba(232,112,90,.6);
+  background:rgba(232,112,90,.06);
+  box-shadow:0 0 30px rgba(232,112,90,.1);
+}
+
+/* divider rule */
+.cp-rule{
+  width:100%;height:1px;margin:36px 0;
+  background:linear-gradient(90deg,rgba(26,179,196,.2),rgba(26,179,196,.05),transparent);
+}
+
 @media(max-width:700px){
   .topbar,.botbar{padding:18px 20px}
   .topnav{display:none}
   .platforms{gap:14px}
   .pdiv{display:none}
+  .cp-header,.cp-body{padding-left:22px;padding-right:22px}
+  .cp-engage{grid-template-columns:1fr}
+  .cp-example{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .cp-ex-value{grid-column:2;grid-row:2}
 }
 </style>
 </head>
@@ -307,6 +542,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);cursor:no
       <a class="tnl" href="https://twn.nightingaleint.com" target="_blank">Wandering</a>
       <a class="tnl" href="https://vault.nightingaleint.com" target="_blank">Vault</a>
       <a class="tnl" href="https://living.nightingaleint.com" target="_blank">Living</a>
+      <a class="tnl" id="consultNav" href="#" onclick="openConsult();return false;" style="color:var(--salmon-soft);border-color:rgba(232,112,90,.28);background:rgba(232,112,90,.04)">Work with us</a>
     </nav>
   </div>
 
@@ -388,7 +624,8 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);cursor:no
 
     </div>
 
-    <a class="enter-btn" href="mailto:admin@nightingaleint.com">Contact · admin@nightingaleint.com</a>
+    <a class="enter-btn" href="/cdn-cgi/l/email-protection#d1b0b5bcb8bf91bfb8b6b9a5b8bfb6b0bdb4b8bfa5ffb2bebc">Contact · <span class="__cf_email__" data-cfemail="ed8c89808483ad83848a859984838a8c8188848399c38e8280">[email&#160;protected]</span></a>
+    <button class="enter-btn" onclick="openConsult()" style="margin-top:10px;border-color:rgba(232,112,90,.3);color:var(--salmon-soft)">Work with us →</button>
   </div>
 
   <!-- BOTTOM -->
@@ -405,7 +642,263 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);cursor:no
 
 </div><!-- /ui -->
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+<!-- ═══ CONSULTING PANEL ═══ -->
+<div class="consult-overlay" id="consultOverlay" onclick="closeConsult()"></div>
+<div class="consult-panel" id="consultPanel">
+
+  <div class="cp-header">
+    <div>
+      <div class="cp-eyebrow">Nightingale Intelligence · Advisory</div>
+      <h2 class="cp-title">Secure, <strong>Scalable and Strong.</strong><br>System Design</h2>
+    </div>
+    <button class="cp-close" onclick="closeConsult()">✕ Close</button>
+  </div>
+
+  <div class="cp-body">
+
+    <p class="cp-intro">
+      We bring the same rigour that powers High Horse, Nightingale Vault, and Nightingale Living to external engagements —
+      systems that are fast, sophisticated and intentional. No bloat, no theatre. Just things that work.
+    </p>
+
+    <!-- SERVICES -->
+    <div class="cp-section-label">Services</div>
+    <div class="cp-services">
+
+      <div class="cp-svc">
+        <div class="cp-svc-top">
+          <div class="cp-svc-name">Vibe Coding & Rapid Prototyping</div>
+          <div class="cp-svc-rate">contact@nightingaleint.com</div>
+        </div>
+        <div class="cp-svc-desc">
+          From zero to working product in days, not months. We prototype at speed using AI-augmented
+          development — full-stack web apps, data dashboards, internal tools, MVPs. The goal is always
+          something real you can use or show investors, not a Figma file.
+        </div>
+        <div class="cp-svc-tags">
+          <span class="cp-tag">React / Next.js</span>
+          <span class="cp-tag">Python backends</span>
+          <span class="cp-tag">AI integration</span>
+          <span class="cp-tag">Claude API</span>
+          <span class="cp-tag">Canvas / WebGL</span>
+          <span class="cp-tag">Supabase</span>
+        </div>
+      </div>
+
+      <div class="cp-svc">
+        <div class="cp-svc-top">
+          <div class="cp-svc-name">Systems Architecture & Design</div>
+          <div class="cp-svc-rate">contact@nightingaleint.com</div>
+        </div>
+        <div class="cp-svc-desc">
+          Designing the bones that let products scale without breaking. We map data flows,
+          choose infrastructure that fits the actual problem, define APIs, and create documentation
+          that future developers can actually follow. Domain expertise in data-heavy platforms,
+          aviation systems, and privacy-first financial tooling.
+        </div>
+        <div class="cp-svc-tags">
+          <span class="cp-tag">System design</span>
+          <span class="cp-tag">API architecture</span>
+          <span class="cp-tag">Data modelling</span>
+          <span class="cp-tag">Cloud infra</span>
+          <span class="cp-tag">Privacy by design</span>
+        </div>
+      </div>
+
+      <div class="cp-svc">
+        <div class="cp-svc-top">
+          <div class="cp-svc-name">AI Strategy & Implementation Consulting</div>
+          <div class="cp-svc-rate">contact@nightingaleint.com</div>
+        </div>
+        <div class="cp-svc-desc">
+          Helping organisations figure out where AI actually belongs in their stack — and where it doesn't.
+          We assess workflows, identify high-leverage automation points, design prompting systems,
+          and build internal AI tooling that people genuinely adopt. Honest about limitations,
+          precise about opportunity.
+        </div>
+        <div class="cp-svc-tags">
+          <span class="cp-tag">LLM integration</span>
+          <span class="cp-tag">Workflow automation</span>
+          <span class="cp-tag">Prompt engineering</span>
+          <span class="cp-tag">Agent design</span>
+          <span class="cp-tag">AI auditing</span>
+        </div>
+      </div>
+
+      <div class="cp-svc">
+        <div class="cp-svc-top">
+          <div class="cp-svc-name">Technical Due Diligence</div>
+          <div class="cp-svc-rate">contact@nightingaleint.com · min 2d</div>
+        </div>
+        <div class="cp-svc-desc">
+          Independent assessment of a startup's technical foundations for investors, acquirers, or boards.
+          We read the code, interview the team, stress-test the architecture, and produce a clear
+          report on what's solid and what carries risk. No jargon, no hedging.
+        </div>
+        <div class="cp-svc-tags">
+          <span class="cp-tag">Code review</span>
+          <span class="cp-tag">Security posture</span>
+          <span class="cp-tag">Scalability assessment</span>
+          <span class="cp-tag">Team evaluation</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cp-rule"></div>
+
+    <!-- WORKED EXAMPLES FROM PORTFOLIO -->
+    <div class="cp-section-label">From the portfolio</div>
+    <div class="cp-examples">
+
+      <div class="cp-example">
+        <div class="cp-ex-num">01</div>
+        <div>
+          <div class="cp-ex-project">High Horse — Planetary Intelligence Platform</div>
+          <div class="cp-ex-detail">
+           Environmental data platform. Real-time feed ingestion, geospatial
+            rendering, multi-source normalisation. Built all the way from architecture through deployment.
+            Equivalent scope: 6 months at a traditional agency.
+          </div>
+        </div>
+        <div class="cp-ex-value">~8 weeks<br>Systems + Build</div>
+      </div>
+
+      <div class="cp-example">
+        <div class="cp-ex-num">02</div>
+        <div>
+          <div class="cp-ex-project">Nightingale Vault — Macroeco Dashboard</div>
+          <div class="cp-ex-detail">
+            Financial intelligence dashboard with latest data on World Economy. Designed the encryption architecture,
+            data residency model, and audit trail logic before a single line of product code.
+            Security architecture consultancy at its clearest.
+          </div>
+        </div>
+        <div class="cp-ex-value">~4 weeks<br>Architecture</div>
+      </div>
+
+      <div class="cp-example">
+        <div class="cp-ex-num">03</div>
+        <div>
+          <div class="cp-ex-project">The Wandering Nightingale — Travel & Aviation Platform</div>
+          <div class="cp-ex-detail">
+            Aviation-adjacent intelligence tooling: route analysis, airspace data integration,
+            and a live operational interface built with obsessive attention to information hierarchy.
+            A case study in domain-specific UX under constraint.
+          </div>
+        </div>
+        <div class="cp-ex-value">~3 weeks<br>Vibe build</div>
+      </div>
+
+      <div class="cp-example">
+        <div class="cp-ex-num">04</div>
+        <div>
+          <div class="cp-ex-project">NI Main Site — nightingaleint.com</div>
+          <div class="cp-ex-detail">
+            Home site. Topographic canvas rendering, wormhole warp engine, constellation mapping,
+            parallax satellites — all in a single 877-line file. Proof that vibe coding at pace
+            doesn't mean cutting corners on craft.
+          </div>
+        </div>
+        <div class="cp-ex-value">1 session<br>Vibe build</div>
+      </div>
+
+    </div>
+
+    <div class="cp-rule"></div>
+
+    <!-- ENGAGEMENT MODELS -->
+    <div class="cp-section-label">How we engage</div>
+    <div class="cp-engage">
+      <div class="cp-eng-block">
+        <div class="cp-eng-title">Day Rate</div>
+        <div class="cp-eng-body">Best for defined sprints, reviews, or advisory days. Minimum one day. Invoiced weekly.</div>
+      </div>
+      <div class="cp-eng-block">
+        <div class="cp-eng-title">Project Fixed Fee</div>
+        <div class="cp-eng-body">Scoped upfront for prototypes and architecture deliverables. 50% on start, 50% on delivery.</div>
+      </div>
+      <div class="cp-eng-block">
+        <div class="cp-eng-title">Monthly Retainer</div>
+        <div class="cp-eng-body">Ongoing technical partnership — 4–8 days/month. Priority access, async review, strategic input.</div>
+      </div>
+      <div class="cp-eng-block">
+        <div class="cp-eng-title">Equity / Hybrid</div>
+        <div class="cp-eng-body">For early-stage companies with conviction. Reduced day rate in exchange for a meaningful stake.</div>
+      </div>
+    </div>
+
+    <div class="cp-rule"></div>
+
+    <!-- RATE REFERENCE -->
+    <div class="cp-section-label">Rate reference · 2026</div>
+    <table class="cp-ratetable">
+      <thead>
+        <tr>
+          <th style="width:38%">Service</th>
+          <th style="width:22%">Day rate</th>
+          <th>Typical engagement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Vibe coding / prototyping</td>
+          <td class="rate">Get a quote</td>
+          <td>3–10 days · MVP or feature sprint</td>
+        </tr>
+        <tr>
+          <td>Systems architecture</td>
+          <td class="rate">Get a quote</td>
+          <td>5–15 days · design doc + review cycles</td>
+        </tr>
+        <tr>
+          <td>AI strategy consulting</td>
+          <td class="rate">Get a quote</td>
+          <td>2–5 days · assessment + roadmap</td>
+        </tr>
+        <tr>
+          <td>Technical due diligence</td>
+          <td class="rate">Get a quote</td>
+          <td>2–4 days · report delivered in 5 working days</td>
+        </tr>
+        <tr>
+          <td>Monthly retainer (8d/mo)</td>
+          <td class="rate">Get a quote</td>
+          <td>Ongoing · priority access + async</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- CTA -->
+    <div class="cp-cta">
+      <div class="cp-cta-text">
+        All engagements begin with a 30-minute scoping call — no obligation.<br>
+        We either fit, or we'll say so.
+      </div>
+      <a class="cp-cta-btn" href="mailto:contact@nightingaleint.com">
+        Begin a conversation →
+      </a>
+    </div>
+
+  </div><!-- /cp-body -->
+</div><!-- /consult-panel -->
+
 <script>
+/* ═══ CONSULTING PANEL ═══ */
+function openConsult(){
+  document.getElementById('consultPanel').classList.add('open');
+  document.getElementById('consultOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeConsult(){
+  document.getElementById('consultPanel').classList.remove('open');
+  document.getElementById('consultOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeConsult();});
+
 /* ════════════════════════════════════════════════════════
    1. WORMHOLE / SPACE JOURNEY CANVAS
    Parallax star-warp tunnel with satellites, signal pulses,

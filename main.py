@@ -16,6 +16,7 @@ app.add_middleware(
 app.include_router(vault.router, prefix="/v1/vault")
 app.include_router(hh.router, prefix="/v1/hh")
 app.include_router(living.router, prefix="/v1/living")
+app.include_router(auth.router, prefix="/v1/auth", tags=["Auth"])
 
 @app.get("/")
 async def root():

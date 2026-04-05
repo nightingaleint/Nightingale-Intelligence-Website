@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+requests
+pandas
+skyfield
+python-dotenv
+redis
+pyopensky

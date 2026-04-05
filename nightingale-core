@@ -1,0 +1,39 @@
+import asyncio
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from redis import asyncio as aioredis # For caching
+
+app = FastAPI()
+
+# Enable CORS so your subdomains can talk to the API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://vault.nightingaleint.com",
+        "https://hh.nightingaleint.com",
+        "https://living.nightingaleint.com",
+        "https://twn.nightingaleint.com"
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Shared Redis Cache (Render offers a 'Key Value' instance for this)
+redis = aioredis.from_url("redis://your-render-redis-url")
+
+@app.get("/health")
+async def health():
+    return {"status": "Nightingale Core Online"}
+
+# Example: The "Aviation Fix" for TWN
+@app.get("/v1/wandering/flights")
+async def get_flights():
+    cached_flights = await redis.get("flights_data")
+    if cached_flights:
+        return {"source": "cache", "data": cached_flights}
+    
+    # If not in cache, fetch from OpenSky (Backend-to-Backend)
+    # This prevents the CORS and "Dead API" issues you had in HTML
+    data = {"planes": "fetch_logic_here"} 
+    await redis.set("flights_data", data, ex=300) # Cache for 5 mins
+    return {"source": "live", "data": data}
